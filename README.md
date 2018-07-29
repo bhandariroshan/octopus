@@ -24,6 +24,16 @@ You must have MySQL installed to run this demo.
       5. GRANT ALL PRIVILEGES ON octopuslabs.* TO 'octopus'@'localhost';
  - Run the code -- Python manage.py Runserver
 
+## Architecture ##
+- Follows MVC pattern
+- Models.py: Define database table, also has manager to run crude operation on top of model
+- urls.py - file used to route request
+- views.py - file that has logics stored for request, i.e Handlers
+- Other Files:
+  - static: fodler that contains static files
+  - templates: folder that contains templates that are rendered
+  - utility: contais files that do encryption, decryption, wordcount etc
+
 ## Using the App ## 
 - Visit y -- http://localhost:8888 in your web browser.
 - Enter a url to get word cloud
