@@ -29,6 +29,6 @@ You must have MySQL installed to run this demo.
 - Enter a url to get word cloud
 - Once you get word cloud, visit -- http://localhost:8888/admin
 - You will need to login, if not logged in, use following credentials
-   - * user: octopus * 
-   - * passwrod - octopus123 *
+   - * user: octopus 
+   - * passwrod - octopus123
 - You will then be redirected to admin page
