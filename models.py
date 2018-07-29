@@ -85,15 +85,14 @@ class WordManager(object):
             session.add(word) # add the orm to session
             session.commit() # commit the session when added
         except Exception as e: # if there is an exception
+            session.rollback()
             try:
-                word = session.query().filter(Words.saltedhash==word.saltedhash)
-
-                if word.has_member_entities:
-                    word.encryptedword = word.encryptedword
-                    word.frequency = word.frequency
+                result = session.query(Words).filter(Words.saltedhash==word.saltedhash).first()
+                result.encryptedword = word.encryptedword
+                result.frequency = word.frequency
                 session.commit()
-
             except Exception as e:
                 session.rollback()
                 success = e  # return that it failed
-            session.close()  # close the session
+
+        session.close()  # close the session

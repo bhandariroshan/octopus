@@ -207,7 +207,7 @@ class WordCloudHandler(RequestHandler, SessionMixin):
         except:
             url_string = ''
 
-        if 'http://' and 'https://' not in url_string:
+        if 'http://' not in url_string and 'https://' not in url_string:
             url_string = 'http://' + url_string
 
         try:
@@ -216,7 +216,7 @@ class WordCloudHandler(RequestHandler, SessionMixin):
             try:
                 print('URL STRING IS::: ', url_string)
                 url_string = url_string.replace('http://', 'https://')
-                html = urllib.request.urlopen(url_string).read()
+                html = requests.get(url_string).text
             except:
                 self.redirect('/')
                 return
