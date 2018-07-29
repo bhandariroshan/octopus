@@ -8,6 +8,8 @@ from tornado import web, gen
 from models import WordManager, Words
 import json
 import requests
+from operator import itemgetter
+
 privatekey = None
 
 
@@ -121,6 +123,8 @@ class AdminHandler(RequestHandler, SessionMixin):
                     'count': each_data['frequency']
                 }
                 items.append(new_dict)
+
+        sorted_item = sorted(items, key=itemgetter('count'), reverse=True)
 
         if not self.get_current_user():
             self.redirect('/login')

@@ -21,7 +21,7 @@ class MyApplication(web.Application):
         self.session.configure(bind=db_engine)
         super(MyApplication, self).__init__(handlers=handlers, settings=settings, session=self.session)
 
-    def create_database(self):
+    def migrate_schema(self):
         """
 
         :return:
