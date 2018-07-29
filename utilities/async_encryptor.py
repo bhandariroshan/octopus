@@ -1,5 +1,11 @@
 from cryptography.fernet import Fernet
 
+'''
+    
+    This class handles encryption and decryption of message using fernet algorithm.
+    We will need, cipher to decode message once we encode it, so save the cipher once you generate it.
+    
+'''
 
 class AsyncEncryptor(object):
     @staticmethod

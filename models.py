@@ -11,6 +11,11 @@ import _mysql_exceptions
 Base = declarative_base() # declaritive base for sqlalchemy
 EXECUTOR = ThreadPoolExecutor(options.executor_max_threads) # setup global executor
 
+'''
+    This class handles database connection and operations.
+    We define ORM layer using SQL alchemy, for CRUD operations on database.
+    
+'''
 
 class Words(Base):
     __tablename__ = 'words'
@@ -23,8 +28,17 @@ class Words(Base):
         return(json.dumps({'saltedhash': self.saltedhash, 'encryptedword':self.encryptedword, 'frequency': self.frequency})) #indeed
 
 
-class WordManager(object): # this model will manipulate the Words instances
+class WordManager(object):
     def __init__(self, db_session, io_loop=None, executor=EXECUTOR): # initial setup as an executor
+        """
+
+        :param db_session:
+        :param io_loop:
+        :param executor:
+        """
+
+        ''' Manager class for model initialization. '''
+
         self.io_loop = io_loop or IOLoop.instance() # grabe the ioloop or the global instance
         self.executor = executor # grab the executor
         self.db_session = db_session # get the session
@@ -32,6 +46,14 @@ class WordManager(object): # this model will manipulate the Words instances
     # @run_on_executor  # okay, run this method on the instance's executor
     # @return_future  # return a future
     def get_all_data(self, callback=None):
+        """
+
+        :param callback:
+        :return:
+        """
+
+        ''' Return all data from database. '''
+
         session = self.db_session() # setup the session in this thread
         result = None
         try:
@@ -48,7 +70,15 @@ class WordManager(object): # this model will manipulate the Words instances
     # @run_on_executor  # okay, run this method on the instance's executor
     # @return_future  # return a future
     def create_or_update(self, word, callback=None):
-        """ AnOrmAsyncModel.create - Create an orm in the database """
+        """
+
+        :param word:
+        :param callback:
+        :return:
+        """
+
+        """ Create or update data in the database. """
+
         session = self.db_session() # setup session in this thread
         success = True
         try:
@@ -60,8 +90,7 @@ class WordManager(object): # this model will manipulate the Words instances
 
                 if word.has_member_entities:
                     word.encryptedword = word.encryptedword
-                    word.fre
-                    quency = word.frequency
+                    word.frequency = word.frequency
                 session.commit()
 
             except Exception as e:

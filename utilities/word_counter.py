@@ -7,6 +7,15 @@ from stop_words import get_stop_words
 class WordCounter(object):
     @staticmethod
     def get_sorted_and_hashed_word_count_list(text, select_size=100, url=''):
+        """
+
+        :param text:
+        :param select_size:
+        :param url:
+        :return:
+        """
+        ''' hash words, encrypt them, sort them and return counter as required. '''
+
         # Cleaning text and lower casing all words
         for char in '()*#~!$^&_+=[]{}\\"/:;|<>?%-.,\'\n",':
             text = text.replace(char, '')
@@ -31,13 +40,14 @@ class WordCounter(object):
                 newdata = dict({
                     'text': each_word,
                     'size': word_count_dict[each_word],
-                    'saltedhash': WordHasher.hash(each_word),
+                    'saltedhash': WordHasher.hash(each_word), # hash word
                     'url': url,
-                    'encryptedword': AsyncEncryptor.encrypt_message(each_word, cipher)
+                    'encryptedword': AsyncEncryptor.encrypt_message(each_word, cipher) # encrypt word
                 })
 
                 word_count_list.append(newdata)
 
+        # sort words by count
         sorted_word_count_list = sorted(word_count_list, key=itemgetter('size'), reverse=True)[0:select_size]
 
         for each_word in sorted_word_count_list:

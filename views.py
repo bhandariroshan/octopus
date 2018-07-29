@@ -7,17 +7,26 @@ from tornado_sqlalchemy import SessionMixin
 from tornado import web, gen
 from models import WordManager, Words
 import json
-
+import requests
 privatekey = None
 
 
 class LogOutHandler(RequestHandler):
-
+    """ Handle Logout. """
     def get_current_user(self):
+        """
+
+        :return:
+        """
+
         return self.get_cookie("username")
 
     def get(self):
-        items = []
+        """
+
+        :return:
+        """
+
         self.set_cookie("username", '')
         self.redirect('/login')
 
@@ -26,9 +35,19 @@ class LogInHandler(RequestHandler):
     template = "templates/login.html"
 
     def get_current_user(self):
+        """
+
+        :return:
+        """
+        ''' Login request is based on cookie. Return if any user is set on cookie. '''
         return self.get_cookie("username")
 
     def get(self):
+        """
+
+        :return:
+        """
+        ''' Handle Login request. '''
         items = []
 
         if self.get_current_user():
@@ -43,6 +62,8 @@ class LogInHandler(RequestHandler):
         :param kwargs:
         :return:
         """
+        ''' Verify if username and password is accurate, redirect to admin page if active. '''
+
         data = self.request.arguments
         try:
             username = str(data['username'][0].decode("utf-8"))
@@ -65,14 +86,30 @@ class AdminHandler(RequestHandler, SessionMixin):
     template = "templates/admin.html"
 
     def initialize(self, **kwargs):
-        """ WordCloudHandler.initialize - Setup the Models we will need for this handler """
+        """
+
+        :param kwargs:
+        :return:
+        """
+        ''' WordCloudHandler.initialize - Setup the Models we will need for this handler '''
+
         db_session = kwargs.pop('db_session')
         self.manager = WordManager(db_session=db_session)
 
     def get_current_user(self):
+        """
+
+        :return:
+        """
+        ''' return current user. '''
         return self.get_cookie("username")
 
     def get(self):
+        """
+
+        :return:
+        """
+        ''' Handle admin page request. '''
         items = []
         data = self.manager.get_all_data()
         global privatekey
@@ -99,6 +136,12 @@ class MainHandler(RequestHandler):
     template = "templates/main.html"
 
     def get(self):
+        """
+
+        :return:
+        """
+        ''' Handle main request page, i.e page to enter url for cloud formation. '''
+
         items = []
         self.render(self.template, title="Home Page", items=items)
 
@@ -107,7 +150,14 @@ class WordCloudHandler(RequestHandler, SessionMixin):
     template = "templates/cloud.html"
 
     def initialize(self, **kwargs):
+        """
+
+        :param kwargs:
+        :return:
+        """
+
         """ WordCloudHandler.initialize - Setup the Models we will need for this handler """
+
         db_session = kwargs.pop('db_session')
         self.manager = WordManager(db_session=db_session)
 
@@ -117,6 +167,7 @@ class WordCloudHandler(RequestHandler, SessionMixin):
         :param word_list:
         :return:
         """
+        ''' Save encrypted and hashed words in database. '''
         for each_word in word_list:
             word = Words(
                 saltedhash=each_word['saltedhash'],
@@ -133,6 +184,7 @@ class WordCloudHandler(RequestHandler, SessionMixin):
 
         :return:
         """
+        ''' Do no allow get request. '''
         self.redirect('/')
         return
 
@@ -145,8 +197,10 @@ class WordCloudHandler(RequestHandler, SessionMixin):
         :param kwargs:
         :return:
         """
-
+        ''' Handle post request, render word cloud.'''
         utility = HTMLUtilities()
+
+        # get post data from request
         data = self.request.arguments
         try:
             url_string = str(data['urlstring'][0].decode("utf-8"))
@@ -154,12 +208,26 @@ class WordCloudHandler(RequestHandler, SessionMixin):
             url_string = ''
 
         if 'http://' and 'https://' not in url_string:
-            url_string += 'http://'
+            url_string = 'http://' + url_string
 
-        html = urllib.request.urlopen(url_string).read()
+        try:
+            html = requests.get(url_string).text
+        except:
+            try:
+                print('URL STRING IS::: ', url_string)
+                url_string = url_string.replace('http://', 'https://')
+                html = urllib.request.urlopen(url_string).read()
+            except:
+                self.redirect('/')
+                return
+
         text = utility.text_from_html(html)
+
+        # send text of the web page to get word count, hash of words
         word_count_list, private_key, data_list_for_template = WordCounter.get_sorted_and_hashed_word_count_list(text=text, url=url_string)
         self.save_words(word_list=word_count_list)
+
+        # save private key for latter decryption
         global privatekey
         privatekey = private_key
 
