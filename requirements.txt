@@ -4,3 +4,4 @@ tornado-sqlalchemy
 requests
 bs4
 stop-words
+cryptography
