@@ -113,13 +113,14 @@ class AdminHandler(RequestHandler, SessionMixin):
         items = []
         data = self.manager.get_all_data()
         global privatekey
-        for each_data in data:
-            each_data = json.loads(each_data)
-            new_dict = {
-                'word': AsyncEncryptor.decrypt_message(each_data['encryptedword'], privatekey),
-                'count': each_data['frequency']
-            }
-            items.append(new_dict)
+        if data:
+            for each_data in data:
+                each_data = json.loads(each_data)
+                new_dict = {
+                    'word': AsyncEncryptor.decrypt_message(each_data['encryptedword'], privatekey),
+                    'count': each_data['frequency']
+                }
+                items.append(new_dict)
 
         if not self.get_current_user():
             self.redirect('/login')
