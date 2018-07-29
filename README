@@ -1,4 +1,4 @@
-* Running the Tornado Word Cloud Demo *
+*Running the Tornado Word Cloud Demo*
 
 This demo is a simple word cloud demo app that uses encoding algorithm to encode words and store words in database.
 You must have MySQL installed to run this demo.
