@@ -1,4 +1,4 @@
-*Running the Tornado Word Cloud Demo*
+Running the Tornado Word Cloud Demo
 
 This demo is a simple word cloud demo app that uses encoding algorithm to encode words and store words in database.
 You must have MySQL installed to run this demo.
@@ -30,4 +30,4 @@ its prerequisites can be installed with `docker-compose up`.
 7. Enter a url to get word cloud
 8. Once you get word cloud, visit -- http://localhost:8888/admin
 9. You will need to login, if not loggedin use user- octopus and passwrod - octopus123
-10. You will then be redirected to admin page
+10.You will then be redirected to admin page
