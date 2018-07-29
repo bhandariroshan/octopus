@@ -25,8 +25,8 @@ You must have MySQL installed to run this demo.
  - Run the code -- Python manage.py Runserver
 
 ## Using the App ## 
-1. Visit y -- http://localhost:8888 in your web browser.
-2. Enter a url to get word cloud
-3. Once you get word cloud, visit -- http://localhost:8888/admin
-4. You will need to login, if not loggedin use user- octopus and passwrod - octopus123
-5.You will then be redirected to admin page
+- Visit y -- http://localhost:8888 in your web browser.
+- Enter a url to get word cloud
+- Once you get word cloud, visit -- http://localhost:8888/admin
+- You will need to login, if not loggedin use user- octopus and passwrod - octopus123
+- You will then be redirected to admin page
