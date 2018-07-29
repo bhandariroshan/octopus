@@ -1,0 +1,28 @@
+<html>
+   <head>
+      <title>{{ title }}</title>
+        <link rel="stylesheet" href="/static/css/cloud.css">
+        <script src="/static/js/d3.js"></script>
+        <script src="/static/js/d3.layout.cloud.js"></script>
+        <script src="/static/js/d3.wordcloud.js"></script>
+       <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+   </head>
+   <body>
+        <div id='wordcloud'></div>
+        <script>
+            var text = '{% raw data %}';
+            var height = $(document).height();
+            var width = $(document).width();
+            var data = JSON.parse(text)['data'];
+          d3.wordcloud()
+            .size([width, height])
+            .selector('#wordcloud')
+            .words(data)
+            .start();
+        </script>
+   </body>
+
+ </html>

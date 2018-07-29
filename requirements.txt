@@ -1,0 +1,6 @@
+tornado
+mysqlclient
+tornado-sqlalchemy
+requests
+bs4
+stop-words

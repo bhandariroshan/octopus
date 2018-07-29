@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+    web:
+        build: .
+        command: python3 runserver.py
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - "8888:8888"
+        depends_on:
+            - db
+    db:
+        image: mysql
