@@ -12,8 +12,7 @@ You must have MySQL installed to run this demo.
    This demo requires Python 3.5 or newer, and the packages listed in
    requirements.txt. Install them with `pip -r requirements.txt`
 - Create a database and user for the blog.
-   Connect to the database with `mysql -U root -p` (for Mysq;) or
-   `cockroach sql` (for CockroachDB).
+   Connect to the database with `mysql -U root -p` (for Mysq;)
 
    Create a database and user, and grant permissions:
    
